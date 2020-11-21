@@ -1,8 +1,7 @@
 import sys
-from argparse_actions import CheckRemainingDiskSpaceAction
-from torrent_parser import TorrentParser
 import argparse
-
+from .util.torrent_parser import TorrentParser
+from .util.argparse_actions import CheckRemainingDiskSpaceAction
 
 parser = argparse.ArgumentParser(description='Sends torrent files to deluge only if certain conditions are met.')
 parser.add_argument('infile', type=str)
