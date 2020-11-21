@@ -1,17 +1,21 @@
-import bencodepy
+import sys
+
+from argparse_actions import CheckRemainingDiskSpaceAction, ExtractTorrentSizeAction
 import argparse
-from functools import reduce
 
 parser = argparse.ArgumentParser(description='Sends torrent files to deluge only if certain conditions are met.')
-parser.add_argument('infile', type=argparse.FileType('rb'))
+parser.add_argument('infile', type=argparse.FileType('rb'), action=ExtractTorrentSizeAction)
+parser.add_argument('--check-disk-space', type=str, action=CheckRemainingDiskSpaceAction, dest='remaining_disk_space')
 
 args = parser.parse_args()
 
-torrent_info = dict(bencodepy.decode(args.infile.read()))
+torrent_size = args.infile
+remaining_disk_space = args.remaining_disk_space
 
-torrent_size = reduce(lambda length1, length2: length1+length2,
-                      map(lambda file: file[b'length'], torrent_info[b'info'][b'files']))
+print('Torrent size: %s %s' % (torrent_size / 1024 / 1024 / 1024, "GB"))
+print('Remaining disk space: %s %s' % (remaining_disk_space / 1024 / 1024 / 1024, "GB"))
 
-
-
-print(torrent_size / 1024 / 1024 / 1024)
+if torrent_size > remaining_disk_space:
+    sys.exit(-1)
+else:
+    sys.exit(0)
