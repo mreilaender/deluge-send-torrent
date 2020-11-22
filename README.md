@@ -1,11 +1,14 @@
 # send-torrent-to-deluge
 This is a CLI tool to send torrent files to deluge only if certain criteria are met.
 
-## Usage
+## Installation
 
 ```commandline
-main.py -h
+pip install .
 ```
+
+
+## Usage
 
 ### Arguments
 | Argument | Description | Example |
