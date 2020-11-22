@@ -6,8 +6,8 @@ setup(
     scripts=['./scripts/send-to-deluge'],
     author='Manuel Reilaender',
     description='Sends torrent files to deluge only if certain criteria are met',
-    package_dir={'', 'lib'},
-    packages=find_packages('lib'),
+    package_dir={'': 'src'},
+    packages=find_packages('src'),
     install_requires=[
         'setuptools',
         'bencodepy == 0.9.5'
