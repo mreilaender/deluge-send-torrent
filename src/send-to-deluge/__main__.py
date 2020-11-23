@@ -1,5 +1,6 @@
 import sys
 import argparse
+import subprocess
 from .util.torrent_parser import TorrentParser
 from .util.argparse_actions import CheckRemainingDiskSpaceAction
 
@@ -29,5 +30,9 @@ if torrent_size > remaining_disk_space:
     print("Not enough remaining disk space. Ignoring torrent: %s" % torrent_name)
     sys.exit(1)
 else:
-    print("Sending to deluge: %s" % deluge_command)
+    process = subprocess.Popen(['deluge-console', "'connect %s:%s %s %s ; add %s ; exit'" %
+                                (args.deluge_host, args.deluge_daemon_port, args.deluge_username, args.deluge_password,
+                                 args.infile)], stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = process.communicate()
+    print("Sent to deluge: %s" % torrent_name)
     sys.exit(0)
